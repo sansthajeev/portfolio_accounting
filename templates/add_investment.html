@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Add Investment{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Add Investment to {{ portfolio.name }}</h1>
+
+<form method="POST" class="bg-white p-4 rounded shadow space-y-4">
+  {% csrf_token %}
+
+  <!-- Investment Information -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input type="text" name="asset_name" placeholder="Asset Name" required class="w-full border p-2 rounded" />
+    <input type="text" name="symbol" placeholder="Investment Symbol (e.g. AAPL)" required class="w-full border p-2 rounded" />
+    <input type="text" name="asset_type" placeholder="Asset Type (e.g. Stock)" required class="w-full border p-2 rounded" />
+    <input type="date" name="purchase_date" required class="w-full border p-2 rounded" />
+  </div>
+
+  <!-- Units and Pricing -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input type="number" name="units" id="units" placeholder="No. of Shares / Units" required class="w-full border p-2 rounded" />
+    <input type="number" step="0.01" name="face_value" placeholder="Face Value per Unit (optional)" class="w-full border p-2 rounded" />
+    <input type="number" step="0.01" name="cost_per_unit" id="cost_per_unit" placeholder="Cost per Unit" required class="w-full border p-2 rounded" />
+    <input type="number" step="0.01" name="amount_invested" id="amount_invested" placeholder="Auto-Calculated Total Purchase Cost" readonly class="w-full border p-2 rounded bg-gray-100 cursor-not-allowed" />
+  </div>
+
+  <!-- Optional current value -->
+  <input type="number" step="0.01" name="current_value" placeholder="Current Market Value (optional)" class="w-full border p-2 rounded" />
+
+  <!-- Accounting -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block mb-1">Select Debit Account (e.g. Investment)</label>
+      <select name="debit_account" class="w-full border p-2 rounded">
+        {% for acc in accounts %}
+          <option value="{{ acc.id }}">{{ acc.name }} ({{ acc.type|title }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label class="block mb-1">Select Credit Account (e.g. Bank)</label>
+      <select name="credit_account" class="w-full border p-2 rounded">
+        {% for acc in accounts %}
+          <option value="{{ acc.id }}">{{ acc.name }} ({{ acc.type|title }})</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Add Investment</button>
+</form>
+
+<!-- Auto-calculation Script -->
+<script>
+  const unitsInput = document.getElementById('units');
+  const costInput = document.getElementById('cost_per_unit');
+  const totalInput = document.getElementById('amount_invested');
+
+  function calculateTotal() {
+    const units = parseFloat(unitsInput.value) || 0;
+    const cost = parseFloat(costInput.value) || 0;
+    totalInput.value = (units * cost).toFixed(2);
+  }
+
+  unitsInput.addEventListener('input', calculateTotal);
+  costInput.addEventListener('input', calculateTotal);
+</script>
+
+{% endblock %}

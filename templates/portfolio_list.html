@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}My Portfolios{% endblock %}
+{% block heading %}My Portfolios{% endblock %}
+{% block content %}
+<a href="{% url 'add_portfolio' %}" class="bg-blue-600 text-white px-4 py-2 rounded inline-block mb-4">+ Add Portfolio</a>
+
+<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for p in portfolios %}
+    <li class="bg-white shadow p-4 rounded border">
+      <a href="{% url 'view_portfolio' p.id %}" class="text-blue-700 font-semibold text-lg">{{ p.name }}</a>
+      <p class="text-sm text-gray-500 mt-1">Investments: {{ p.investments.count }}</p>
+    </li>
+  {% empty %}
+    <li>No portfolios found. <a href="{% url 'add_portfolio' %}" class="text-blue-500 underline">Add one</a>.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

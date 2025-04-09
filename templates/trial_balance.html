@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}Trial Balance{% endblock %}
+{% block heading %}Trial Balance{% endblock %}
+{% block content %}
+
+<!-- Date Filter -->
+<form method="get" class="mb-6 flex flex-wrap gap-4 items-end">
+  <div>
+    <label class="text-sm text-gray-700">Start Date:</label>
+    <input type="date" name="start_date" value="{{ start_date }}" class="border rounded p-2" />
+  </div>
+  <div>
+    <label class="text-sm text-gray-700">End Date:</label>
+    <input type="date" name="end_date" value="{{ end_date }}" class="border rounded p-2" />
+  </div>
+  <div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Apply</button>
+  </div>
+</form>
+
+<!-- Table -->
+<div class="overflow-x-auto bg-white shadow rounded">
+  <table class="min-w-full text-sm border border-gray-200">
+    <thead class="bg-blue-900 text-white">
+      <tr>
+        <th class="p-2 text-left">Particular</th>
+        <th class="p-2 text-right">Opening Debit</th>
+        <th class="p-2 text-right">Opening Credit</th>
+        <th class="p-2 text-right">Period Debit</th>
+        <th class="p-2 text-right">Period Credit</th>
+        <th class="p-2 text-right">Closing Debit</th>
+        <th class="p-2 text-right">Closing Credit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for group, data in report_data.items %}
+      <tr class="bg-gray-100 font-bold uppercase text-sm">
+        <td colspan="7" class="p-2">{{ group }}</td>
+      </tr>
+
+      {% for row in data.rows %}
+      <tr class="border-b">
+        <td class="p-2">{{ row.account.code }}_{{ row.account.name }}</td>
+        <td class="p-2 text-right">{% if row.opening > 0 %}{{ row.opening|floatformat:2 }}{% endif %}</td>
+        <td class="p-2 text-right">
+            {% if row.opening < 0 %}
+            {{ row.opening|abs_val|floatformat:2 }}
+            {% endif %}
+        </td>
+
+        <td class="p-2 text-right">{{ row.period_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ row.period_credit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{% if row.closing > 0 %}{{ row.closing|floatformat:2 }}{% endif %}</td>
+        <td class="p-2 text-right">
+            {% if row.closing < 0 %}
+            {{ row.closing|abs_val|floatformat:2 }}
+            {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr class="bg-gray-200 font-semibold">
+        <td class="p-2 text-right">Total {{ group }}</td>
+        <td class="p-2 text-right">{{ data.totals.opening_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ data.totals.opening_credit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ data.totals.period_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ data.totals.period_credit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ data.totals.closing_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ data.totals.closing_credit|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+      <tr class="bg-blue-100 font-bold text-sm border-t-2 border-blue-400">
+        <td class="p-2 text-right">Grand Total</td>
+        <td class="p-2 text-right">{{ grand_totals.opening_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ grand_totals.opening_credit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ grand_totals.period_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ grand_totals.period_credit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ grand_totals.closing_debit|floatformat:2 }}</td>
+        <td class="p-2 text-right">{{ grand_totals.closing_credit|floatformat:2 }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

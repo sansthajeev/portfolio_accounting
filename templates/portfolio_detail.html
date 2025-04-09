@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Portfolio: {{ portfolio.name }}{% endblock %}
+{% block heading %}Portfolio: {{ portfolio.name }}{% endblock %}
+
+{% block content %}
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+  <div class="bg-white shadow rounded p-4">
+    <p class="text-sm text-gray-500">Total Invested</p>
+    <p class="text-xl font-bold text-blue-700">Rs. {{ total_invested|floatformat:2 }}</p>
+  </div>
+  <div class="bg-white shadow rounded p-4">
+    <p class="text-sm text-gray-500">Current Market Value</p>
+    <p class="text-xl font-bold text-green-600">Rs. {{ total_current|floatformat:2 }}</p>
+  </div>
+  <div class="bg-white shadow rounded p-4">
+    <p class="text-sm text-gray-500">Gain / Loss</p>
+    <p class="text-xl font-bold {% if gain_loss >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+      Rs. {{ gain_loss|floatformat:2 }}
+    </p>
+  </div>
+  <div class="bg-white shadow rounded p-4">
+    <p class="text-sm text-gray-500">Return %</p>
+    <p class="text-xl font-bold {% if return_pct >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+      {{ return_pct|floatformat:2 }}%
+    </p>
+  </div>
+</div>
+
+<div class="flex items-center justify-between mb-4">
+  <a href="{% url 'add_investment' portfolio.id %}" class="bg-green-600 text-white px-4 py-2 rounded text-sm">+ Add Investment</a>
+  
+  <!-- View toggle -->
+  <div>
+    <label class="mr-2 text-sm text-gray-700">View:</label>
+    <button onclick="switchView('grid')" class="bg-purple-100 px-3 py-1 rounded hover:bg-purple-200 text-sm" id="gridBtn">🔳 Grid</button>
+    <button onclick="switchView('table')" class="bg-purple-100 px-3 py-1 rounded hover:bg-purple-200 text-sm" id="tableBtn">📋 Table</button>
+  </div>
+</div>
+
+<!-- Grid View -->
+<div id="gridView" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {% for inv in portfolio.investments.all %}
+  <div class="bg-white shadow p-4 rounded">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-lg font-semibold">{{ inv.asset_name }}</h3>
+        <p class="text-sm text-gray-500">Symbol: <strong>{{ inv.symbol }}</strong> | Type: {{ inv.asset_type }}</p>
+      </div>
+      <form action="{% url 'delete_investment' inv.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="text-red-500 text-sm hover:underline">Delete</button>
+      </form>
+    </div>
+    <hr class="my-2" />
+    <div class="grid grid-cols-2 gap-2 text-sm">
+      <div><strong>Units:</strong> {{ inv.units }}</div>
+      <div><strong>Face Value:</strong> Rs. {{ inv.face_value|default:'-' }}</div>
+      <div><strong>Cost/Unit:</strong> Rs. {{ inv.cost_per_unit }}</div>
+      <div><strong>Invested:</strong> Rs. {{ inv.amount_invested }}</div>
+      <div><strong>Current Value:</strong> Rs. {{ inv.current_value }}</div>
+      <div><strong>Date:</strong> {{ inv.purchase_date }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Table View -->
+<div id="tableView" class="hidden overflow-x-auto">
+  <table class="min-w-full bg-white shadow rounded">
+    <thead class="bg-gray-200 text-sm text-gray-600">
+      <tr>
+        <th class="p-2 text-left">Asset</th>
+        <th class="p-2">Symbol</th>
+        <th class="p-2">Units</th>
+        <th class="p-2">Cost/Unit</th>
+        <th class="p-2">Invested</th>
+        <th class="p-2">Current</th>
+        <th class="p-2">Date</th>
+        <th class="p-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for inv in portfolio.investments.all %}
+      <tr class="border-b">
+        <td class="p-2">{{ inv.asset_name }}</td>
+        <td class="p-2">{{ inv.symbol }}</td>
+        <td class="p-2 text-center">{{ inv.units }}</td>
+        <td class="p-2 text-right">Rs. {{ inv.cost_per_unit }}</td>
+        <td class="p-2 text-right">Rs. {{ inv.amount_invested }}</td>
+        <td class="p-2 text-right">Rs. {{ inv.current_value }}</td>
+        <td class="p-2">{{ inv.purchase_date }}</td>
+        <td class="p-2 text-right">
+          <form action="{% url 'delete_investment' inv.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="text-red-500 text-sm hover:underline">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- View Toggle Script -->
+<script>
+  function switchView(view) {
+    document.getElementById('gridView').classList.toggle('hidden', view !== 'grid');
+    document.getElementById('tableView').classList.toggle('hidden', view !== 'table');
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <div class="flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md">
+      <div class="p-6 text-2xl font-bold text-purple-700">Soft UI</div>
+      <nav class="mt-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="{% url 'dashboard' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              <span class="text-purple-600">📊</span>
+              <span class="ml-2">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'accounts' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              <span class="text-purple-600">📘</span>
+              <span class="ml-2">Accounts</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'journal_list' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              📒 All Journals
+            </a>
+          </li>
+
+          
+          <li>
+            <a href="{% url 'add_transaction' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              <span class="text-purple-600">📄</span>
+              <span class="ml-2">Journal</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'portfolio_list' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              <span class="text-purple-600">📄</span>
+              <span class="ml-2">Portfolio</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'add_portfolio' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+              <span class="text-purple-600">➕</span>
+              <span class="ml-2">New Portfolio</span>
+            </a>
+          </li>
+        </ul>
+        <hr class="my-4 border-gray-200" />
+
+<h2 class="text-sm font-semibold text-gray-600 px-4 mb-1">Reports</h2>
+<ul class="space-y-1 px-2">
+  <li>
+    <a href="{% url 'trial_balance' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+      📊 <span class="ml-2">Trial Balance</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'profit_loss' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+      📈 <span class="ml-2">Profit & Loss</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'balance_sheet' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+      🧾 <span class="ml-2">Balance Sheet</span>
+    </a>
+  </li>
+  <li>
+  <a href="{% url 'day_journal' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+    📆 Day Journal
+  </a>
+
+</li>
+
+</ul>
+<h2 class="text-sm font-semibold text-gray-600 px-4 mb-1">Equity</h2>
+<ul class="space-y-1 px-2">
+  <li>
+    <a href="{% url 'list_shareholders' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+      🧑‍🤝‍🧑 <span class="ml-2">Shareholders</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'add_shareholder' %}" class="flex items-center px-4 py-2 hover:bg-purple-100 rounded">
+      ➕ <span class="ml-2">Add Shareholder</span>
+    </a>
+  </li>
+</ul>
+      </nav>
+      
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <div class="text-gray-700 text-sm mb-2">/ Pages / Default</div>
+      <h1 class="text-2xl font-bold mb-6">{% block heading %}General Statistics{% endblock %}</h1>
+      {% block content %}
+      {% endblock %}
+    </main>
+
+  </div>
+</body>
+</html>

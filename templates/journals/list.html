@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Journal Entries{% endblock %}
+{% block heading %}Journal Entries{% endblock %}
+{% block content %}
+
+<table class="w-full table-auto bg-white shadow rounded text-sm">
+  <thead class="bg-gray-100 text-left">
+    <tr>
+      <th class="p-2">Date</th>
+      <th class="p-2">Serial</th>
+      <th class="p-2">Description</th>
+      <th class="p-2">Journal</th>
+      <th class="p-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tx in transactions %}
+    <tr class="border-b">
+      <td class="p-2">{{ tx.date }}</td>
+      <td class="p-2">{{ tx.serial_number }}</td>
+      <td class="p-2">{{ tx.description }}</td>
+      <td class="p-2">{{ tx.journal.name }}</td>
+      <td class="p-2">
+        <a href="{% url 'edit_transaction' tx.id %}" class="text-blue-600 hover:underline">Edit</a> |
+        <a href="{% url 'delete_transaction' tx.id %}" class="text-red-600 hover:underline">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

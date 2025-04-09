@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Balance Sheet{% endblock %}
+{% block heading %}Balance Sheet{% endblock %}
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <div>
+    <h2 class="text-gray-700 font-semibold mb-2">Assets</h2>
+    <div class="bg-white shadow rounded">
+      <table class="w-full text-sm">
+        {% for item in assets %}
+        <tr class="border-b">
+          <td class="p-2">{{ item.account.name }}</td>
+          <td class="p-2 text-right">Rs. {{ item.balance|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="bg-gray-100 font-semibold">
+          <td class="p-2 text-right">Total Assets</td>
+          <td class="p-2 text-right">Rs. {{ total_assets|floatformat:2 }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-gray-700 font-semibold mb-2">Liabilities & Equity</h2>
+    <div class="bg-white shadow rounded">
+      <table class="w-full text-sm">
+        {% for item in liabilities_equity %}
+        <tr class="border-b">
+          <td class="p-2">{{ item.account.name }}</td>
+          <td class="p-2 text-right">Rs. {{ item.balance|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="bg-gray-100 font-semibold">
+          <td class="p-2 text-right">Total L + E</td>
+          <td class="p-2 text-right">Rs. {{ total_liabilities_equity|floatformat:2 }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

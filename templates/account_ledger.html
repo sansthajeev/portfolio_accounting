@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Ledger: {{ account.name }}{% endblock %}
+{% block heading %}Ledger for {{ account.name }}{% endblock %}
+{% block content %}
+
+<!-- Date Filter -->
+<form method="GET" class="flex flex-wrap gap-4 items-end mb-4">
+  <div>
+    <label for="start_date" class="text-sm text-gray-700">From:</label>
+    <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="border rounded p-2" />
+  </div>
+  <div>
+    <label for="end_date" class="text-sm text-gray-700">To:</label>
+    <input type="date" name="end_date" id="end_date" value="{{ end_date }}" class="border rounded p-2" />
+  </div>
+  <div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+  </div>
+</form>
+
+<!-- Ledger Table -->
+<div class="overflow-x-auto bg-white shadow rounded">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-100 text-gray-600">
+      <tr>
+        <th class="p-2 text-left">Date</th>
+        
+        <th class="p-2 text-left">Description</th>
+        <th class="p-2 text-right">Debit</th>
+        <th class="p-2 text-right">Credit</th>
+        <th class="p-2 text-right">Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in ledger %}
+      <tr class="border-b">
+        <td class="p-2">{{ row.date }}</td>
+        <td class="p-2">{{ row.description }}</td>
+        <td class="p-2 text-right">{% if row.debit > 0 %}{{ row.debit|floatformat:2 }}{% endif %}</td>
+        <td class="p-2 text-right">{% if row.credit > 0 %}{{ row.credit|floatformat:2 }}{% endif %}</td>
+        <td class="p-2 text-right font-medium {% if row.balance < 0 %}text-red-600{% else %}text-green-600{% endif %}">
+          {{ row.balance|floatformat:2 }}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center p-4 text-gray-500">No entries for this account.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

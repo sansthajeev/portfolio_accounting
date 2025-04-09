@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Day Journal{% endblock %}
+{% block heading %}Day Journal{% endblock %}
+
+{% block content %}
+<form method="get" class="mb-4 flex items-end gap-4">
+  <div>
+    <label class="text-sm text-gray-700">Date:</label>
+    <input type="date" name="date" value="{{ selected_date }}" class="border rounded p-2" required>
+  </div>
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Show</button>
+</form>
+
+{% if transactions %}
+  {% for tx in transactions %}
+    <div class="bg-white shadow rounded mb-4 p-4">
+      <h2 class="font-bold text-lg">{{ tx.serial_number }} - {{ tx.description }}</h2>
+      <p class="text-sm text-gray-500">{{ tx.date }} | {{ tx.journal.name }}</p>
+      <table class="mt-2 w-full text-sm">
+        <thead>
+          <tr class="border-b">
+            <th class="text-left p-1">Account</th>
+            <th class="text-right p-1">Debit</th>
+            <th class="text-right p-1">Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in tx.entries.all %}
+          <tr>
+            <td class="p-1">{{ entry.account.name }}</td>
+            <td class="p-1 text-right">{% if entry.entry_type == 'debit' %}{{ entry.amount|floatformat:2 }}{% endif %}</td>
+            <td class="p-1 text-right">{% if entry.entry_type == 'credit' %}{{ entry.amount|floatformat:2 }}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+
+  <div class="text-right font-semibold mt-6 bg-gray-100 p-4 rounded">
+    Total Debit: Rs. {{ total_debit|floatformat:2 }} |
+    Total Credit: Rs. {{ total_credit|floatformat:2 }}
+  </div>
+{% elif selected_date %}
+  <p class="text-gray-500">No transactions found for {{ selected_date }}.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Shareholders{% endblock %}
+{% block heading %}Equity Shareholders{% endblock %}
+{% block content %}
+
+<table class="w-full bg-white shadow rounded text-sm">
+  <thead class="bg-gray-100 text-gray-700">
+    <tr>
+      <th class="p-2 text-left">Name</th>
+      <th class="p-2">Email</th>
+      <th class="p-2">Linked Account</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in shareholders %}
+    <tr class="border-b">
+      <td class="p-2">{{ s.name }}</td>
+      <td class="p-2">{{ s.email }}</td>
+      <td class="p-2">{{ s.account.code }} - {{ s.account.name }}</td>
+      <a href="{% url 'add_capital_contribution' s.id %}" class="text-sm text-blue-600 hover:underline ml-2">+ Capital</a>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

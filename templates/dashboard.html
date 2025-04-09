@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block heading %}General Statistics{% endblock %}
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-500">Today's Money</p>
+        <p class="text-xl font-bold">$53,000 <span class="text-green-500 text-sm">+55%</span></p>
+      </div>
+      <div class="text-pink-500 bg-pink-100 rounded-full p-2">
+        💰
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-500">New Clients</p>
+        <p class="text-xl font-bold">+3,462 <span class="text-red-500 text-sm">-2%</span></p>
+      </div>
+      <div class="text-pink-500 bg-pink-100 rounded-full p-2">
+        🧑‍💼
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-500">Today's Users</p>
+        <p class="text-xl font-bold">2,300 <span class="text-green-500 text-sm">+3%</span></p>
+      </div>
+      <div class="text-pink-500 bg-pink-100 rounded-full p-2">
+        ⏱️
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-500">Sales</p>
+        <p class="text-xl font-bold">$103,430 <span class="text-green-500 text-sm">+5%</span></p>
+      </div>
+      <div class="text-pink-500 bg-pink-100 rounded-full p-2">
+        🛒
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

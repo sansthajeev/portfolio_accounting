@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Delete Transaction{% endblock %}
+{% block heading %}Confirm Delete{% endblock %}
+{% block content %}
+
+<div class="bg-white p-4 shadow rounded">
+  <p>Are you sure you want to delete transaction:</p>
+  <p class="font-bold mt-2">{{ transaction.serial_number }} - {{ transaction.description }}</p>
+
+  <form method="POST" class="mt-4">
+    {% csrf_token %}
+    <button class="bg-red-600 text-white px-4 py-2 rounded">Yes, Delete</button>
+    <a href="{% url 'journal_list' %}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+  </form>
+</div>
+
+{% endblock %}

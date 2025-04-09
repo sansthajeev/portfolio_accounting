@@ -34,7 +34,7 @@ django-portfolio/ ├── core/ │ ├── models.py │ ├── views.py
 ## ⚙️ Installation Guide
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/django-portfolio-manager.git
+git clone https://github.com/sansthajeev/portfolio_accounting.git
 cd django-portfolio-manager
 
 # Set up virtual environment
